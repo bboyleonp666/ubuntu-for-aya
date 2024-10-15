@@ -1,0 +1,24 @@
+services:
+  aya:
+    image: aya:aya
+    privileged: true
+    build:
+      context: .
+      target: aya
+    networks:
+      ayane:
+    stdin_open: true
+    tty: true
+    command: ["bash"]
+
+  ubuntu:
+    image: ubuntu:22.04
+    networks:
+      ayane:
+    stdin_open: true
+    tty: true
+    command: ["bash"]
+    
+networks:
+  ayane:
+    driver: bridge

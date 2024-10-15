@@ -1,5 +1,5 @@
-FROM ubuntu:22.04
-LABEL maintainer="bboyleonp <bboyleonp@gmail.com>"
+FROM ubuntu:22.04 AS rust
+LABEL maintainer="bboyleonp666 <bboyleonp@gmail.com>"
 WORKDIR /root
 
 ARG LLVM_VERSION=18
@@ -24,8 +24,12 @@ RUN apt update && \
     cargo install bpf-linker && \
     cargo install cargo-generate
 
+FROM rust AS aya
 ## Clone aya and Build libbpf
-RUN git clone https://github.com/aya-rs/aya.git && \
+RUN mkdir -p /root/aya-rs && \
+    cd /root/aya-rs && \
+    git clone https://github.com/aya-rs/aya.git && \
+    git clone https://github.com/aya-rs/book.git && \
     git clone --recurse-submodules https://github.com/libbpf/bpftool.git && \
     cd bpftool/src && make && make install
 
