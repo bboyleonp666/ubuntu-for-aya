@@ -13,8 +13,8 @@ RUN apt update && \
     apt install -y pkg-config libelf-dev libssl-dev zlib1g zlib1g-dev && \
     apt install -y lsb-release wget software-properties-common gnupg && \
     curl -fsS https://apt.llvm.org/llvm.sh | bash -s -- ${LLVM_VERSION} && \
-    ln -s /usr/lib/llvm-18/bin/clang /usr/bin/clang && \
-    ln -s /usr/lib/llvm-18/bin/llvm-config /usr/bin/llvm-config && \
+    ln -s /usr/lib/llvm-${LLVM_VERSION}/bin/clang /usr/bin/clang && \
+    ln -s /usr/lib/llvm-${LLVM_VERSION}/bin/llvm-config /usr/bin/llvm-config && \
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && \
     . "$HOME/.cargo/env" && \
     rustup install stable && \
