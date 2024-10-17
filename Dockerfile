@@ -1,8 +1,8 @@
-FROM ubuntu:22.04 AS rust
+FROM ubuntu:22.04
 LABEL maintainer="bboyleonp666 <bboyleonp@gmail.com>"
 WORKDIR /root
 
-ARG LLVM_VERSION=18
+ARG LLVM_VERSION=19
 
 ## Install packages for building BPF
 # 1. build tools
@@ -17,20 +17,18 @@ RUN apt update && \
     ln -s /usr/lib/llvm-${LLVM_VERSION}/bin/llvm-config /usr/bin/llvm-config && \
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && \
     . "$HOME/.cargo/env" && \
+    ln -s "$HOME/.cargo/bin/cargo" /usr/local/bin/cargo && \
     rustup install stable && \
     rustup toolchain install nightly --component rust-src && \
     rustup target add x86_64-unknown-linux-musl && \
     rustup target add aarch64-unknown-linux-musl && \
-    cargo install bpf-linker && \
+    if [ "$(uname -m)" = "aarch64" ]; then \
+        apt install -y llvm-19-dev libclang-19-dev libpolly-19-dev && \
+        ln -s /usr/lib/aarch64-linux-gnu/libzstd.so.1 /usr/lib/aarch64-linux-gnu/libzstd.so && \
+        cargo install bpf-linker --no-default-features; \
+    else \
+        cargo install bpf-linker; \
+    fi && \
     cargo install cargo-generate
-
-FROM rust AS aya
-## Clone aya and Build libbpf
-RUN mkdir -p /root/aya-rs && \
-    cd /root/aya-rs && \
-    git clone https://github.com/aya-rs/aya.git && \
-    git clone https://github.com/aya-rs/book.git && \
-    git clone --recurse-submodules https://github.com/libbpf/bpftool.git && \
-    cd bpftool/src && make && make install
 
 CMD ["/bin/bash"]
