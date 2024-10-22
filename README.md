@@ -3,16 +3,22 @@ This is the virtual environment preparation repository for [aya](https://github.
 
 # Quick start
 The following are the available commands that you can use for building an docker image for aya.
-```shell
-# To build
-$ docker compose build
+1. Clone this repo: 
+    ```shell
+    $ git clone --recursive https://github.com/bboyleonp666/ubuntu-for-aya.git
+    ```
 
-# To start
-$ docker compose up -d
+2. Build docker images and run
+    ```shell
+    # To build
+    $ docker compose build
 
-# To attach to a target docker container
-$ docker compose attach aya
+    # To start
+    $ docker compose up -d
 
-# To stop and remove
-$ docker compose down
-```
+    # To attach to a target docker container
+    $ docker compose attach aya
+
+    # To stop and remove
+    $ docker compose down
+    ```

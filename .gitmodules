@@ -1,0 +1,6 @@
+[submodule "aya"]
+	path = aya
+	url = https://github.com/aya-rs/aya.git
+[submodule "book"]
+	path = book
+	url = https://github.com/aya-rs/book.git
